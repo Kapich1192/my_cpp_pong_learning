@@ -6,7 +6,7 @@
 /*   By: Dmitriy <kapich1192@yandex.ru>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 09:05:24 by Dmitriy           #+#    #+#             */
-/*   Updated: 2022/07/02 16:54:33 by Dmitriy          ###   ########.fr       */
+/*   Updated: 2022/07/02 18:00:11 by Dmitriy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void fillingGameField(
 		int* bollVectorX,
 		int rocket1Y,
 		int rocket2Y);
+void restart(void);
 
 int main(void) {
   char gameField[HEIGTH][WEIGTH];
@@ -59,6 +60,7 @@ int main(void) {
 			&exit,
 			&rocket1Y,
 			&rocket2Y);
+	skip();
     fillingGameField(
 			gameField,
 			&bollY,
@@ -72,6 +74,71 @@ int main(void) {
     //skip();
   //}
   return (0);
+}
+
+void listenClick(
+		char* exit,
+		int* rocket1Y,
+		int* rocket2Y) {
+  char temp = getchar();
+  if (temp == 'q') {
+    *exit = 'q';
+  } else if (temp == 'a' && *rocketY1 > 2) {
+    *rocketY1--;
+  } else if (temp == 'z' && *rocketY1 < 77) {
+    *rocketY1++;
+  } else if (temp == 'k' && *rocketY2 > 2) {
+    *rocketY2--;
+  } else if (temp == 'm' && *rocketY2 < 77) {
+    *rocketY2++;
+  }
+}
+
+void fillingGameField(
+		char gameField[HEIGTH][WEIGTH],
+		int* bollY,
+		int* bollX,
+		int* bollVectorY,
+		int* bollVectorX,
+		int rocket1Y,
+		int rocket2Y,
+		int* player1Point,
+		int* player2Point) {
+	/*print fields*/
+	/*print rocket1*/
+	/*print rocket2*/
+	/*print boll*/
+}
+
+void moveBoll(
+		char gameField[HEIGTH][WEIGTH],
+		int* bollY,
+		int* bollX,
+		int* bollVectorX,
+		int* bollVectorY,
+		int* player1Point,
+		int* player2Point) {
+  if (*bollY == 1) {
+    *bollVectorY = 1;
+  }
+  if (*bollY == 23) {
+    *bollVectorY = -1;
+  }
+  if (*bollX == 2) {
+    *player2Point++;
+	*bollX = 40;
+	*bollY = 12;
+  }
+  if (*bollX == 77) {
+    *player1Point++;
+	*bollX = 40;
+	*bollY = 12;
+  }
+  /*Hit rocket*/
+  if (gameField[*bollY][*bollX + 1] == ROCKET)
+  /*moving boll*/
+  *bollY += *bollVectorY;
+  *bollX += *bollVectorX
 }
 
 void skip(void) {

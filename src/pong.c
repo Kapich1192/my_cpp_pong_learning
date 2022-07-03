@@ -6,7 +6,7 @@
 /*   By: Dmitriy <kapich1192@yandex.ru>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 09:05:24 by Dmitriy           #+#    #+#             */
-/*   Updated: 2022/07/03 10:53:09 by Dmitriy          ###   ########.fr       */
+/*   Updated: 2022/07/03 11:16:03 by Dmitriy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ int main(void) {
   int player2Point = 0;
   int bollY = 12;
   int bollX = 40;
-  int bollVectorX = 1;
-  int bollVectorY = 1;
+  int bollVectorX = -1;
+  int bollVectorY = -1;
   char exit = 'w';
 
   initializeGameField(gameField);
@@ -90,13 +90,13 @@ void listenClick(
   if (temp == 'q') {
     *exit = 'q';
   } else if (temp == 'a' && *rocket1Y > 2) {
-    *rocket1Y--;
+    *rocket1Y -= 1;
   } else if (temp == 'z' && *rocket1Y < HEIGTH - 3) {
-    *rocket1Y++;
+    *rocket1Y += 1;
   } else if (temp == 'k' && *rocket2Y > 2) {
-    *rocket2Y--;
+    *rocket2Y -= 1;
   } else if (temp == 'm' && *rocket2Y < HEIGTH - 3) {
-    *rocket2Y++;
+    *rocket2Y += 1;
   }
 }
 
@@ -117,10 +117,12 @@ void fillingGameField(
         if (y == 0 || x == 0 || y == HEIGTH - 1 || x == WEIGTH -1)
 			gameField[y][x] = FIELD_MARKER;
 		 /*rocket1*/
-		else if ((y == rocket1Y || y - 1 == rocket1Y || y + 1 == rocket1Y) && x == 3)
+		else if ((y == rocket1Y || y - 1 == rocket1Y || y + 1 == rocket1Y) &&
+				x == 2)
 			gameField[y][x] = ROCKET;
 		 /*rocket2*/
-		else if ((y == rocket2Y || y - 1 == rocket2Y || y + 1 == rocket2Y) && x == 77)
+		else if ((y == rocket2Y || y - 1 == rocket2Y || y + 1 == rocket2Y) &&
+				x == 77)
 			gameField[y][x] = ROCKET;
 		else if (y == *bollY && x == *bollX)
 			gameField[y][x] = BOLL;
@@ -162,7 +164,11 @@ void moveBoll(
 	*bollY = 12;
   }
   /*Hit rocket*/
-  if (gameField[*bollY][*bollX + 1] == ROCKET)
+  if (gameField[*bollY][*bollX + 1] == ROCKET ||
+		  gameField[*bollY][*bollX - 1] == ROCKET) {
+    *bollVectorX *= -1;
+	*bollVectorY *= -1;
+  }
   /*moving boll*/
   *bollY += *bollVectorY;
   *bollX += *bollVectorX;

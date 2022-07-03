@@ -6,7 +6,7 @@
 /*   By: Dmitriy <kapich1192@yandex.ru>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 09:05:24 by Dmitriy           #+#    #+#             */
-/*   Updated: 2022/07/02 18:00:11 by Dmitriy          ###   ########.fr       */
+/*   Updated: 2022/07/03 10:23:51 by Dmitriy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,13 @@ void listenClick(
 		int* rocket1Y,
 		int* rocket2Y);
 void moveBoll(
+		char gameField[HEIGTH][WEIGTH]
 		int* bollY,
 		int* bollX,
 		int* bollVectorX,
-		int* bollVectorY);
+		int* bollVectorY,
+		int* player1Point,
+		int* player2Point);
 void fillingGameField(
 		char gameField[HEIGTH][WEIGTH],
 		int* bollY,
@@ -39,8 +42,11 @@ void fillingGameField(
 		int* bollVectorY,
 		int* bollVectorX,
 		int rocket1Y,
-		int rocket2Y);
+		int rocket2Y,
+		int* player1Point,
+		int* player2Point);
 void restart(void);
+void printMessage(void);
 
 int main(void) {
   char gameField[HEIGTH][WEIGTH];
@@ -68,7 +74,9 @@ int main(void) {
 			&bollVectorY,
 			&bollVectorX,
 			rocket1Y,
-			rocket2Y);
+			rocket2Y,
+			&player1Point,
+			&player2Point);
     printGameField(gameField);
 	if ()
     //skip();

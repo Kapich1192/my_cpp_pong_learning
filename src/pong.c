@@ -6,7 +6,7 @@
 /*   By: Dmitriy <kapich1192@yandex.ru>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 09:05:24 by Dmitriy           #+#    #+#             */
-/*   Updated: 2022/07/03 10:23:51 by Dmitriy          ###   ########.fr       */
+/*   Updated: 2022/07/03 10:53:09 by Dmitriy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 #define HEIGTH 25
 #define WEIGTH 80
-#define FIELD_MARKER '='
-#define FIELD_SPACE_SYMBOL '.'
+#define FIELD_MARKER 'o'
+#define FIELD_SPACE_SYMBOL ' '
 #define BOLL 'o'
 #define ROCKET '|'
 
@@ -28,7 +28,7 @@ void listenClick(
 		int* rocket1Y,
 		int* rocket2Y);
 void moveBoll(
-		char gameField[HEIGTH][WEIGTH]
+		char gameField[HEIGTH][WEIGTH],
 		int* bollY,
 		int* bollX,
 		int* bollVectorX,
@@ -45,8 +45,8 @@ void fillingGameField(
 		int rocket2Y,
 		int* player1Point,
 		int* player2Point);
-void restart(void);
-void printMessage(void);
+//void restart(void);
+//void printMessage(void);
 
 int main(void) {
   char gameField[HEIGTH][WEIGTH];
@@ -61,11 +61,7 @@ int main(void) {
   char exit = 'w';
 
   initializeGameField(gameField);
-  //while (exit != 'q') {
-    listenClick(
-			&exit,
-			&rocket1Y,
-			&rocket2Y);
+  while (exit != 'q') {
 	skip();
     fillingGameField(
 			gameField,
@@ -78,9 +74,11 @@ int main(void) {
 			&player1Point,
 			&player2Point);
     printGameField(gameField);
-	if ()
-    //skip();
-  //}
+	listenClick(
+		&exit,
+		&rocket1Y,
+	    &rocket2Y);
+  }
   return (0);
 }
 
@@ -91,14 +89,14 @@ void listenClick(
   char temp = getchar();
   if (temp == 'q') {
     *exit = 'q';
-  } else if (temp == 'a' && *rocketY1 > 2) {
-    *rocketY1--;
-  } else if (temp == 'z' && *rocketY1 < 77) {
-    *rocketY1++;
-  } else if (temp == 'k' && *rocketY2 > 2) {
-    *rocketY2--;
-  } else if (temp == 'm' && *rocketY2 < 77) {
-    *rocketY2++;
+  } else if (temp == 'a' && *rocket1Y > 2) {
+    *rocket1Y--;
+  } else if (temp == 'z' && *rocket1Y < HEIGTH - 3) {
+    *rocket1Y++;
+  } else if (temp == 'k' && *rocket2Y > 2) {
+    *rocket2Y--;
+  } else if (temp == 'm' && *rocket2Y < HEIGTH - 3) {
+    *rocket2Y++;
   }
 }
 
@@ -113,9 +111,30 @@ void fillingGameField(
 		int* player1Point,
 		int* player2Point) {
 	/*print fields*/
-	/*print rocket1*/
-	/*print rocket2*/
-	/*print boll*/
+	for (int y = 0; y < HEIGTH; y++) {
+      for (int x = 0; x <WEIGTH; x++) {
+		  /*game fields*/
+        if (y == 0 || x == 0 || y == HEIGTH - 1 || x == WEIGTH -1)
+			gameField[y][x] = FIELD_MARKER;
+		 /*rocket1*/
+		else if ((y == rocket1Y || y - 1 == rocket1Y || y + 1 == rocket1Y) && x == 3)
+			gameField[y][x] = ROCKET;
+		 /*rocket2*/
+		else if ((y == rocket2Y || y - 1 == rocket2Y || y + 1 == rocket2Y) && x == 77)
+			gameField[y][x] = ROCKET;
+		else if (y == *bollY && x == *bollX)
+			gameField[y][x] = BOLL;
+		else gameField[y][x] = FIELD_SPACE_SYMBOL;
+	  }
+	}
+
+	moveBoll(gameField,
+			bollY,
+			bollX,
+			bollVectorX,
+			bollVectorY,
+			player1Point,
+			player2Point);
 }
 
 void moveBoll(
@@ -146,7 +165,7 @@ void moveBoll(
   if (gameField[*bollY][*bollX + 1] == ROCKET)
   /*moving boll*/
   *bollY += *bollVectorY;
-  *bollX += *bollVectorX
+  *bollX += *bollVectorX;
 }
 
 void skip(void) {

@@ -6,7 +6,7 @@
 /*   By: Dmitriy <kapich1192@yandex.ru>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 09:05:24 by Dmitriy           #+#    #+#             */
-/*   Updated: 2022/07/03 11:16:03 by Dmitriy          ###   ########.fr       */
+/*   Updated: 2022/07/04 19:38:25 by Dmitriy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #define FIELD_SPACE_SYMBOL ' '
 #define BOLL 'o'
 #define ROCKET '|'
+#define COUNT_WIN 2
 
 void printGameField(char array[HEIGTH][WEIGTH]);
 void initializeGameField(char array[HEIGTH][WEIGTH]);
@@ -45,8 +46,8 @@ void fillingGameField(
 		int rocket2Y,
 		int* player1Point,
 		int* player2Point);
-//void restart(void);
-//void printMessage(void);
+void printMessage(int player1Point, int player2Point);
+void printInstruction(void);
 
 int main(void) {
   char gameField[HEIGTH][WEIGTH];
@@ -57,7 +58,7 @@ int main(void) {
   int bollY = 12;
   int bollX = 40;
   int bollVectorX = -1;
-  int bollVectorY = -1;
+  int bollVectorY = 1;
   char exit = 'w';
 
   initializeGameField(gameField);
@@ -73,13 +74,33 @@ int main(void) {
 			rocket2Y,
 			&player1Point,
 			&player2Point);
+	printMessage(player1Point, player2Point);
     printGameField(gameField);
+	printInstruction();
 	listenClick(
 		&exit,
 		&rocket1Y,
 	    &rocket2Y);
+	if (player1Point == COUNT_WIN) {
+		skip();
+		printf("\n\n\nPlayer1 Win!!!\n\n\n");
+		exit = 'q';
+	}
+	if (player2Point == COUNT_WIN) {
+      skip();
+	  printf("\n\n\nPlayer2 Win!!!\n\n\n");
+	  exit = 'q';
+	}
   }
   return (0);
+}
+
+void printMessage(int player1Point, int player2Point) {
+  printf("Player1: %d, Player2: %d;\n", player1Point, player2Point);
+}
+
+void printInstruction(void) {
+  printf("Press q for exit.\na z move rocket1,\nk m move rocket2,\n");
 }
 
 void listenClick(
@@ -154,12 +175,12 @@ void moveBoll(
     *bollVectorY = -1;
   }
   if (*bollX == 2) {
-    *player2Point++;
+    *player2Point += 1;
 	*bollX = 40;
 	*bollY = 12;
   }
   if (*bollX == 77) {
-    *player1Point++;
+    *player1Point += 1;
 	*bollX = 40;
 	*bollY = 12;
   }
@@ -167,7 +188,6 @@ void moveBoll(
   if (gameField[*bollY][*bollX + 1] == ROCKET ||
 		  gameField[*bollY][*bollX - 1] == ROCKET) {
     *bollVectorX *= -1;
-	*bollVectorY *= -1;
   }
   /*moving boll*/
   *bollY += *bollVectorY;

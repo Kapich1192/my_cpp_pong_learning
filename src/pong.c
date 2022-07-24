@@ -6,7 +6,7 @@
 /*   By: Dmitriy <kapich1192@yandex.ru>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 09:05:24 by Dmitriy           #+#    #+#             */
-/*   Updated: 2022/07/04 19:38:25 by Dmitriy          ###   ########.fr       */
+/*   Updated: 2022/07/24 09:55:54 by Dmitriy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #define FIELD_SPACE_SYMBOL ' '
 #define BOLL 'o'
 #define ROCKET '|'
-#define COUNT_WIN 2
+#define COUNT_WIN 21
 
 void printGameField(char array[HEIGTH][WEIGTH]);
 void initializeGameField(char array[HEIGTH][WEIGTH]);
@@ -143,11 +143,12 @@ void fillingGameField(
 			gameField[y][x] = ROCKET;
 		 /*rocket2*/
 		else if ((y == rocket2Y || y - 1 == rocket2Y || y + 1 == rocket2Y) &&
-				x == 77)
+				x == WEIGTH - 3)
 			gameField[y][x] = ROCKET;
 		else if (y == *bollY && x == *bollX)
 			gameField[y][x] = BOLL;
-		else gameField[y][x] = FIELD_SPACE_SYMBOL;
+		else 
+			gameField[y][x] = ' ';
 	  }
 	}
 
@@ -171,18 +172,18 @@ void moveBoll(
   if (*bollY == 1) {
     *bollVectorY = 1;
   }
-  if (*bollY == 23) {
+  if (*bollY == HEIGTH - 2) {
     *bollVectorY = -1;
   }
   if (*bollX == 2) {
     *player2Point += 1;
-	*bollX = 40;
-	*bollY = 12;
+	*bollX = WEIGTH / 2;
+	*bollY = HEIGTH / 2;
   }
-  if (*bollX == 77) {
+  if (*bollX == WEIGTH - 3) {
     *player1Point += 1;
-	*bollX = 40;
-	*bollY = 12;
+	*bollX = WEIGTH / 2;
+	*bollY = HEIGTH / 2;
   }
   /*Hit rocket*/
   if (gameField[*bollY][*bollX + 1] == ROCKET ||
